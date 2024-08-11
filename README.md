@@ -1,3 +1,4 @@
+![Screenshot 2024-08-11 182715](https://github.com/user-attachments/assets/41dee675-1cbd-466d-b3cb-cc31601b02f6)
 How to create .NET microservices that comply with the CQRS and Event Sourcing patterns.
 
 How to:
