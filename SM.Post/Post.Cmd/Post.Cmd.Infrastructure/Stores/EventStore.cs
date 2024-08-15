@@ -22,7 +22,7 @@ namespace Post.Cmd.Infrastructure.Stores
       var eventStream = await this.eventStoreRepository.FindByAggregateId(aggregateId);
       if (eventStream == null || eventStream.Any() == false)
       {
-        throw new AggregateNotFoundException("");
+        throw new AggregateNotFoundException("Incorrect post ID provided");
       }
 
       return eventStream.OrderBy(x=>x.Version).Select(x=>x.EventData).ToList();

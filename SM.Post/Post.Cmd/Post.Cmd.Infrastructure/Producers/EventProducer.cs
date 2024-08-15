@@ -14,6 +14,7 @@ namespace Post.Cmd.Infrastructure.Producers
     {
       this.config = config.Value;
     }
+
     public async Task ProduceAsync<T>(string topic, T @event) where T : BaseEvent
     {
       using var producer = new ProducerBuilder<string,string>(this.config)
@@ -30,7 +31,7 @@ namespace Post.Cmd.Infrastructure.Producers
       var deliveryResult = await producer.ProduceAsync(topic, @eventMessage);
       if (deliveryResult.Status == PersistenceStatus.NotPersisted)
       {
-        throw new Exception($"Could not produce {@event.GetType().Name} message topic - {topic} due to the following reason: {deliveryResult.Message}");
+        throw new Exception($"Could not produce {@event.GetType().Name} message topic - {topic} due to the following reason: {deliveryResult.Message}.");
       }
     }
   }

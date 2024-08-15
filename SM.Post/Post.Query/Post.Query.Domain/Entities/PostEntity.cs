@@ -13,6 +13,5 @@ namespace Post.Query.Domain.Entities
     public string Message { get; set; }
     public int Like { get; set; }
     public virtual ICollection<CommentEntity> Comments { get; set; }
-
   }
 }

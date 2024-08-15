@@ -1,7 +1,5 @@
 ﻿using CQRS.Core.Domain;
-using CQRS.Core.Messages;
 using Post.Common.Events;
-using System.Diagnostics;
 
 namespace Post.Cmd.Domain.Aggregates
 {
@@ -76,11 +74,11 @@ namespace Post.Cmd.Domain.Aggregates
     {
       if (this.active == false) 
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You cannot add comment to an inactive post");
       }
       if (string.IsNullOrEmpty(comment))
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException($"The value of {nameof(comment)} cannot be null or empty");
       }
 
       this.RaiseEvent(new CommentAddedEvent 
@@ -97,15 +95,15 @@ namespace Post.Cmd.Domain.Aggregates
     {
       if (this.active == false)
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You cannot add comment to an inactive post");
       }
       if (string.IsNullOrEmpty(comment))
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException($"The value of {comment} cannot be null or empty");
       }
       if (comments[commentId].Item2.Equals(userName,StringComparison.CurrentCultureIgnoreCase) == false) 
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You are not allowed to edit a comment that was made by another user");
       }
 
 
@@ -123,11 +121,11 @@ namespace Post.Cmd.Domain.Aggregates
     {
       if(this.active == false) 
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You cannot edit the message of an inactive post");
       }
       if(string.IsNullOrEmpty(message)) 
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException($"The value of {nameof(message)} cannot be null or empty");
       }
 
       this.RaiseEvent(new MessageUpdatedEvent 
@@ -141,10 +139,10 @@ namespace Post.Cmd.Domain.Aggregates
     {
       if(this.active == false) 
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You cannot like an inactive post");
       }
 
-      RaiseEvent(new PostLikedEvent()
+      RaiseEvent(new PostLikedEvent
       {
         Id = this.Id,
       });
@@ -154,12 +152,12 @@ namespace Post.Cmd.Domain.Aggregates
     {
       if (this.active == false)
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You cannot remove the comment of an inactive post");
       }
 
       if (comments[commentId].Item2.Equals(username, StringComparison.CurrentCultureIgnoreCase) == false)
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You are not allowed to remove a comment that was made by another user");
       }
 
       RaiseEvent(new CommentRemovedEvent
@@ -173,11 +171,11 @@ namespace Post.Cmd.Domain.Aggregates
     {
       if (this.active == false)
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The post has already been removed");
       }
       if (this.author.Equals(userName, StringComparison.CurrentCultureIgnoreCase) == false)
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("You are not allowed to delete a post that was made by another user");
       }
 
       RaiseEvent(new DeletePostEvent 

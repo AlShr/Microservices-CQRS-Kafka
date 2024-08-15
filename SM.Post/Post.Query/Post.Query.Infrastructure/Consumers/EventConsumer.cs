@@ -6,9 +6,9 @@ using Post.Query.Infrastructure.Converters;
 using Post.Query.Infrastructure.Handlers;
 using System.Text.Json;
 
-namespace Post.Query.Infrastructure.Consumer
+namespace Post.Query.Infrastructure.Consumers
 {
-  internal class EventConsumer : IEventConsumer
+  public class EventConsumer : IEventConsumer
   {
     private readonly ConsumerConfig config;
     private readonly IEventHandler eventHandler;

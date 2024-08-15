@@ -10,7 +10,7 @@ namespace Post.Cmd.Infrastructure.Dispatchers
     {
       if (handlers.ContainsKey(typeof(T)))
       {
-        throw new IndexOutOfRangeException();
+        throw new IndexOutOfRangeException("You can not register the same command handler twice");
       }
 
       handlers.Add(typeof(T), x => handler((T)x));
@@ -24,7 +24,7 @@ namespace Post.Cmd.Infrastructure.Dispatchers
       }
       else
       {
-        throw new ArgumentNullException(nameof(command));
+        throw new ArgumentNullException(nameof(handler), "No command handler was registered");
       }
 
     }

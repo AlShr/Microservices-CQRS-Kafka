@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Post.Cmd.Infrastructure.Config;
 
-namespace Post.Cmd.Infrastructure
+namespace Post.Cmd.Infrastructure.Repositories
 {
     public class EventStoreRepository : IEventStoreRepository
     {
