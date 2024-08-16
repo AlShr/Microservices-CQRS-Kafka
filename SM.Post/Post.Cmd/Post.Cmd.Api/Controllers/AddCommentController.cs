@@ -8,19 +8,19 @@ namespace Post.Cmd.Api.Controllers
 {
   [ApiController]
   [Route("api/v1/[controller]")]
-  public class EditMessageController : ControllerBase
+  public class AddCommentController : ControllerBase
   {
-    private readonly ILogger<EditMessageController> logger;
+    private readonly ILogger<AddCommentController> logger;
     private readonly ICommandDispatcher commandDispatcher;
 
-    public EditMessageController(ILogger<EditMessageController> logger, ICommandDispatcher commandDispatcher)
+    public AddCommentController(ILogger<AddCommentController> logger, ICommandDispatcher commandDispatcher)
     {
       this.logger = logger;
       this.commandDispatcher = commandDispatcher;
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> EditMessageAsync(Guid id, EditMessageCommand command)
+    public async Task<ActionResult> AddCommentAsync(Guid id, AddCommentCommand command)
     {
       try
       {
@@ -28,7 +28,7 @@ namespace Post.Cmd.Api.Controllers
         await commandDispatcher.SendAsync(command);
         return Ok(new BaseResponse
         {
-          Message = "Edit message request completed successfully"
+          Message = "Add comment request completed successfully"
         });
       }
       catch (InvalidOperationException ex)
@@ -49,7 +49,7 @@ namespace Post.Cmd.Api.Controllers
       }
       catch (Exception ex)
       {
-        const string safeErrorMessage = "Error while processing request to edit the message of a post";
+        const string safeErrorMessage = "Error while processing request to add comment to a post";
         logger.Log(LogLevel.Error, safeErrorMessage, ex);
         return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
         {
