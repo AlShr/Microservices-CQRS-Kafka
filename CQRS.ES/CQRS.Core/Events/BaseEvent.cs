@@ -11,6 +11,6 @@ namespace CQRS.Core.Events
 
     public int Version { get; set; }
 
-    public string? Type { get; set; }
+    public string Type { get; set; }
   }
 }
