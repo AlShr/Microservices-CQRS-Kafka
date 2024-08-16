@@ -19,6 +19,7 @@ namespace Post.Cmd.Api.Controllers
       this.commandDispatcher = commandDispatcher;
     }
 
+    [HttpPost]
     public async Task<ActionResult> NewPostAsync(NewPostCommand command)
     {
       var id = Guid.NewGuid();
@@ -33,16 +34,19 @@ namespace Post.Cmd.Api.Controllers
       catch(InvalidOperationException ex) 
       {
         logger.Log(LogLevel.Warning, ex, "Client made a bad request");
-        return BadRequest(new BaseResponse { Message = ex.Message });
+        return BadRequest(new BaseResponse
+        {
+          Message = ex.Message
+        });
       }
       catch (Exception ex) 
       {
-        const string SAFE_ERRROR = "Error while processing request";
-        logger.Log(LogLevel.Error, SAFE_ERRROR, ex);
+        const string safeErrorMessage = "Error while processing request to create a new post";
+        logger.Log(LogLevel.Error, safeErrorMessage, ex, safeErrorMessage);
         return StatusCode(StatusCodes.Status500InternalServerError, new NewPostResponse
         {
           Id = id,
-          Message = SAFE_ERRROR
+          Message = safeErrorMessage
         });
       }
 

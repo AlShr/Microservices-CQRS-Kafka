@@ -27,26 +27,34 @@ namespace Post.Cmd.Api.Controllers
       {
         command.Id = id;
         await commandDispatcher.SendAsync(command);
-        return Ok(new BaseResponse { Message = "" });
+        return Ok(new BaseResponse
+        {
+          Message = "Edit message request completed successfully"
+        });
       }
       catch (InvalidOperationException ex)
       {
         logger.Log(LogLevel.Warning, ex, "Client made a bad request");
-        return BadRequest(new BaseResponse { Message = ex.Message });
+        return BadRequest(new BaseResponse
+        {
+          Message = ex.Message
+        });
       }
       catch (AggregateNotFoundException ex)
       {
-        logger.Log(LogLevel.Warning, ex, "Could not retrieve aggregate");
-        return BadRequest(new BaseResponse { Message = ex.Message });
+        logger.Log(LogLevel.Warning, ex, "Could not retrieve aggregate, client passed an incorrect post ID targeting the aggregate");
+        return BadRequest(new BaseResponse
+        {
+          Message = ex.Message
+        });
       }
       catch (Exception ex)
       {
-        const string SAFE_ERRROR = "Error while processing request";
-        logger.Log(LogLevel.Error, SAFE_ERRROR, ex);
-        return StatusCode(StatusCodes.Status500InternalServerError, new NewPostResponse
+        const string safeErrorMessage = "Error while processing request to edit the message of a post";
+        logger.Log(LogLevel.Error, safeErrorMessage, ex);
+        return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
         {
-          Id = id,
-          Message = SAFE_ERRROR
+          Message = safeErrorMessage
         });
       }
     }
