@@ -70,7 +70,7 @@ namespace Post.Query.Infrastructure.Handlers
 
     public async Task On(CommentUpdatedEvent commentUpdatedEvent)
     {
-      var comment = await commentRepository.GetByIdAsync(commentUpdatedEvent.Id);
+      var comment = await commentRepository.GetByIdAsync(commentUpdatedEvent.CommentId);
       if (comment == null)
       {
         return;
