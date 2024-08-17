@@ -4,7 +4,7 @@ namespace Post.Cmd.Api.Commands
 {
   public class RemoveCommentCommand : BaseCommand
   {
-    public string? Comment { get; set; }
+    public Guid CommentId { get; set; }
 
     public string? Username { get; set; }
   }

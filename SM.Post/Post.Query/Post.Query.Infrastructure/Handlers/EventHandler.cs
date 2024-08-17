@@ -85,7 +85,7 @@ namespace Post.Query.Infrastructure.Handlers
 
     public async Task On(CommentRemovedEvent commentRemovedEvent)
     {
-      await commentRepository.DeleteAsync(commentRemovedEvent.Id);
+      await commentRepository.DeleteAsync(commentRemovedEvent.CommentId);
     }
 
     public async Task On(DeletePostEvent deletePostEvent)

@@ -45,7 +45,7 @@ namespace Post.Cmd.Api.Commands
     public async Task HandleAsync(RemoveCommentCommand command)
     {
       var aggregate = await this.eventSourcingHandler.GetByIdAsync(command.Id);
-      aggregate.RemoveComment(command.Id,command.Username);
+      aggregate.RemoveComment(command.CommentId,command.Username);
 
       await this.eventSourcingHandler.SaveAsync(aggregate);
     }
