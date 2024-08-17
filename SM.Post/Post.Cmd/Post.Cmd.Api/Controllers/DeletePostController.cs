@@ -8,19 +8,19 @@ namespace Post.Cmd.Api.Controllers
 {
   [ApiController]
   [Route("api/v1/[controller]")]
-  public class RemoveCommentController : ControllerBase
+  public class DeletePostController : ControllerBase
   {
-    private readonly ILogger<RemoveCommentController> logger;
+    private readonly ILogger<DeletePostController> logger;
     private readonly ICommandDispatcher commandDispatcher;
 
-    public RemoveCommentController(ILogger<RemoveCommentController> logger, ICommandDispatcher commandDispatcher)
+    public DeletePostController(ILogger<DeletePostController> logger, ICommandDispatcher commandDispatcher)
     {
       this.logger = logger;
       this.commandDispatcher = commandDispatcher;
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> RemoveCommentAsync(Guid id, RemoveCommentCommand command)
+    public async Task<ActionResult> DeletePostAsync(Guid id, DeletePostCommand command)
     {
       try
       {
@@ -28,7 +28,7 @@ namespace Post.Cmd.Api.Controllers
         await commandDispatcher.SendAsync(command);
         return Ok(new BaseResponse
         {
-          Message = "Remove comment request completed successfully"
+          Message = "Delete post request completed successfully"
         });
       }
       catch (InvalidOperationException ex)
@@ -49,7 +49,7 @@ namespace Post.Cmd.Api.Controllers
       }
       catch (Exception ex)
       {
-        const string safeErrorMessage = "Error while processing request to remove comment from a post";
+        const string safeErrorMessage = "Error while processing request to delete a post";
         logger.Log(LogLevel.Error, safeErrorMessage, ex);
         return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
         {
