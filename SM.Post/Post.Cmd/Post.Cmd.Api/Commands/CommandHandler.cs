@@ -64,5 +64,10 @@ namespace Post.Cmd.Api.Commands
 
       await this.eventSourcingHandler.SaveAsync(aggregate);
     }
+
+    public async Task HandleAsync(RestoreReadDbCommand command)
+    {
+      await this.eventSourcingHandler.RepublishEventAsync();
+    }
   }
 }

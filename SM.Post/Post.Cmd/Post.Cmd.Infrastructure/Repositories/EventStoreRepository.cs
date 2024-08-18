@@ -6,25 +6,33 @@ using Post.Cmd.Infrastructure.Config;
 
 namespace Post.Cmd.Infrastructure.Repositories
 {
-    public class EventStoreRepository : IEventStoreRepository
+  public class EventStoreRepository : IEventStoreRepository
+  {
+    private readonly IMongoCollection<EventModel> eventStoreCollection;
+
+    public EventStoreRepository(IOptions<MongoDbConfig> config)
     {
-        private readonly IMongoCollection<EventModel> eventStoreCollection;
+      var mongoClient = new MongoClient(config.Value.ConnectionString);
+      var mongoDb = mongoClient.GetDatabase(config.Value.Database);
 
-        public EventStoreRepository(IOptions<MongoDbConfig> config)
-        {
-            var mongoClient = new MongoClient(config.Value.ConnectionString);
-            var mongoDb = mongoClient.GetDatabase(config.Value.Database);
-
-            eventStoreCollection = mongoDb.GetCollection<EventModel>(config.Value.Collection);
-        }
-        public async Task<List<EventModel>> FindByAggregateId(Guid aggregateId)
-        {
-            return await eventStoreCollection.Find(x => x.AggregateIdentifier == aggregateId).ToListAsync().ConfigureAwait(false);
-        }
-
-        public async Task SaveAsync(EventModel model)
-        {
-            await eventStoreCollection.InsertOneAsync(model).ConfigureAwait(false);
-        }
+      eventStoreCollection = mongoDb.GetCollection<EventModel>(config.Value.Collection);
     }
+
+    public async Task<List<EventModel>> FindAllAsync()
+    {
+      return await eventStoreCollection.Find(_ => true).ToListAsync()
+        .ConfigureAwait(false);
+    }
+
+    public async Task<List<EventModel>> FindByAggregateId(Guid aggregateId)
+    {
+      return await eventStoreCollection.Find(x => x.AggregateIdentifier == aggregateId).ToListAsync()
+        .ConfigureAwait(false);
+    }
+
+    public async Task SaveAsync(EventModel model)
+    {
+      await eventStoreCollection.InsertOneAsync(model).ConfigureAwait(false);
+    }
+  }
 }
